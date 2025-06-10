@@ -43,7 +43,11 @@ here is an explanation of each one and example of the order they iterate over th
 
 # files namespace and classes
 ### Files:
-    ├── ReadMe.md
+
+```plaintext
+.
+├── README.md
+├── makefile
 ├── include
 │   ├── AcsendingOrderIterator.hpp
 │   ├── DescendingOrderIterator.hpp
@@ -51,15 +55,15 @@ here is an explanation of each one and example of the order they iterate over th
 │   ├── MyContainer.hpp
 │   ├── OrderIterator.hpp
 │   ├── ReverseOrderIterator.hpp
-│   ├── doctest.h
 │   ├── sideCrossOrderIterator.hpp
+│   ├── doctest.h
 │   └── tempClass.hpp
-├── makefile
 └── srcs
     ├── Demo.cpp
     ├── tempClass.cpp
     └── test.cpp
-    
+
+```
 
 ### Classes:
     - MyContainer
