@@ -14,6 +14,9 @@ $(TARGET): $(OBJS) srcs/Demo.o $(HEADERS)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) srcs/Demo.o
 	./Main
 
+main:$(TARGET)
+
+demo: $(TARGET)
 $(TEST_TARGET): $(TEST_OBJ) $(HEADERS)
 	$(CXX) $(CXXFLAGS) -o $(TEST_TARGET) $(TEST_OBJ)
 

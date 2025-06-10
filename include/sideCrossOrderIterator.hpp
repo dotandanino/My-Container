@@ -52,7 +52,7 @@ namespace containers
             int right=cont.container.size()-1;
             bool leftide=true;//from the example i want to start with the left side
             while(left<=right){
-                if(leftide){
+                if(leftide){//every time i push only 1 side
                     indices.push_back(temp[left]);
                     left++;
                 }else{

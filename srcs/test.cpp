@@ -12,51 +12,39 @@
 using namespace containers;
 using std::vector;
 using std::string;
-
+/**
+ * @brief Test cases for MyContainer class.  
+*/
 TEST_CASE("MyContainer"){
+    
+    /**
+     * @brief Subcase for empty container including remove, size, and output operator.
+     */
     SUBCASE("Empty Container - remove , size ,<<"){
         MyContainer<string> container;
         CHECK(container.size()==0);
-        CHECK_THROWS_WITH(container.remove("nothing to remove"),"this item is not in the container");
+        CHECK_THROWS_WITH(container.remove("nothing to remove"),"this item is not in the container");//cant remove from empty container;
         string expected = "[]\n";
         std::ostringstream output;
         output<<container;
         CHECK(expected == output.str());
     }
     
-    SUBCASE("Empty container - iterators"){
-        MyContainer<double> container;
-        auto beginA = container.begin_ascending_order();
-        auto endA = container.end_ascending_order();
-        CHECK_THROWS_WITH(*beginA, "Iterator out of range");
-        CHECK_THROWS_WITH(*endA, "Iterator out of range");
-
-        auto beginD = container.begin_descending_order();
-        auto endD = container.end_descending_order();
-        CHECK_THROWS_WITH(*beginD, "Iterator out of range");
-        CHECK_THROWS_WITH(*endD, "Iterator out of range");
-
-        auto beginM = container.begin_middle_out_order();
-        auto endM = container.end_middle_out_order();
-        CHECK_THROWS_WITH(*beginM, "Iterator out of range");
-        CHECK_THROWS_WITH(*endM, "Iterator out of range");
-
-        auto beginO = container.begin_order();
-        auto endO = container.end_order();
-        CHECK_THROWS_WITH(*beginO, "Iterator out of range");
-        CHECK_THROWS_WITH(*endO, "Iterator out of range");
-
-        auto beginR = container.begin_reverse_order();
-        auto endR = container.end_reverse_order();
-        CHECK_THROWS_WITH(*beginR, "Iterator out of range");
-        CHECK_THROWS_WITH(*endR, "Iterator out of range");
-
-        auto beginS = container.begin_side_cross_order();
-        auto endS = container.end_side_cross_order();
-        CHECK_THROWS_WITH(*beginS, "Iterator out of range");
-        CHECK_THROWS_WITH(*endS, "Iterator out of range");
+    /**
+    * @brief subcase for the remove function try to remove an item that is not in the container.
+    */
+    SUBCASE("remove non existing item"){
+        MyContainer<int> container;
+        container.addElement(7);
+        container.addElement(15);
+        container.addElement(6);
+        CHECK_THROWS_WITH(container.remove(100), "this item is not in the container");//cant remove non existing item from the container;
+        CHECK_NOTHROW(container.remove(15));//remove existing item
     }
     
+    /**
+     * @brief Subcase for adding elements and checking the size of the container.
+     */
     SUBCASE("addElement + size"){
         MyContainer<int> container;
         CHECK(container.size()==0);
@@ -78,6 +66,9 @@ TEST_CASE("MyContainer"){
         CHECK(container.size()==8);
     }
 
+    /**
+     * @brief Subcase for the output operator (<<) of MyContainer.
+     */
     SUBCASE("<<"){
         MyContainer<int> container;
         container.addElement(7);
@@ -106,6 +97,9 @@ TEST_CASE("MyContainer"){
         CHECK(expected == output.str());
     }
 
+    /**
+     * @brief Subcase for the remove function of MyContainer. check a lot of remove situations.
+     */
     SUBCASE("remove"){
         MyContainer<int> container;
         container.addElement(7);
@@ -202,6 +196,9 @@ TEST_CASE("MyContainer"){
         CHECK(container.size() == 0);
     }
 
+    /**
+     * @brief subcase for building container that contains double.
+     */
     SUBCASE("double"){
         MyContainer<double> container;
         container.addElement(7.5);
@@ -216,6 +213,9 @@ TEST_CASE("MyContainer"){
         CHECK(container.size() == 5);
     }
 
+    /**
+     * @brief subcase for building container that contains string.
+     */
     SUBCASE("string"){
         MyContainer<string> container;
         container.addElement("sharon");
@@ -230,6 +230,10 @@ TEST_CASE("MyContainer"){
         CHECK(container.size() == 5);
     }
 
+    /**
+     * @brief subcase for building container that contains TempClass - special for the test cases.
+     *  a comperable class becuase this shoul work on every comperable class.
+     */
     SUBCASE("TempClass"){
         MyContainer<TempClass> container;
         container.addElement(TempClass(28, 11.75, "sharon"));
@@ -241,7 +245,13 @@ TEST_CASE("MyContainer"){
     }
 }
 
+/**
+ * @brief Test cases for Ascending Order Iterator.
+ */
 TEST_CASE("Ascending Order"){
+    /**
+     * @brief test the Ascending order iterator on the example from the github readMe page.
+     */
     SUBCASE("git hub example"){
         MyContainer<int> container;
         container.addElement(7);
@@ -262,6 +272,9 @@ TEST_CASE("Ascending Order"){
         
     }
 
+    /**
+     * @brief test the Ascending order iterator on container with duplicate numbers.
+     */
     SUBCASE("Ascending order - with equals number"){
         MyContainer<int>  container ;
         container.addElement(17);
@@ -289,7 +302,9 @@ TEST_CASE("Ascending Order"){
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
-
+    /**
+     * @brief test the Ascending order iterator on container with negative numbers.
+     */
     SUBCASE("Ascending order - with negative numbers"){
         MyContainer<int>  container ;
         container.addElement(-17);
@@ -318,6 +333,9 @@ TEST_CASE("Ascending Order"){
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
 
+    /**
+     * @brief test the Ascending order iterator on container with strings.
+     */
     SUBCASE("string"){
         MyContainer<string> container;
         container.addElement("sharon");
@@ -339,6 +357,9 @@ TEST_CASE("Ascending Order"){
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
 
+    /**
+     * @brief test the Ascending order iterator on container with TempClass.
+     */
     SUBCASE("TempClass"){
         MyContainer<TempClass> container;
         container.addElement(TempClass(28, 11.75, "sharon"));
@@ -368,6 +389,9 @@ TEST_CASE("Ascending Order"){
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
 
+    /**
+     * @brief test the Ascending order iterator operator[].
+     */
     SUBCASE("[]"){
         MyContainer<int> container;
         container.addElement(7);
@@ -391,9 +415,48 @@ TEST_CASE("Ascending Order"){
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
+
+    /**
+     * @brief test the Ascending order iterator on empty container.
+     */
+    SUBCASE("Empty container"){
+        MyContainer<double> container;
+        auto beginA = container.begin_ascending_order();
+        auto endA = container.end_ascending_order();
+        CHECK_THROWS_WITH(*beginA, "Iterator out of range");
+        CHECK_THROWS_WITH(*endA, "Iterator out of range");
+    }
+
+    /**
+     * @brief test the Ascending order iterator on container with double.
+     */
+    SUBCASE("double"){
+        MyContainer<double> container;
+        container.addElement(7.5);
+        container.addElement(15.2);
+        container.addElement(6.3);
+        container.addElement(1.1);
+        container.addElement(2.4);
+
+        auto begin = container.begin_ascending_order();
+        auto end = container.end_ascending_order();
+        std::vector<double> expected = {1.1, 2.4, 6.3, 7.5, 15.2};
+        size_t i=0;
+        for (i=0; begin !=end;++begin, i++)
+        {
+            CHECK(*begin == expected[i]);
+        }
+        CHECK(i == expected.size());//make sure we iterated through all elements
+    }
 }
 
+/**
+ * @brief Test cases for Descending Order Iterator.
+ */
 TEST_CASE("Descending Order"){
+    /**
+     * @brief test the Descending order iterator on the example from the github readMe page.
+     */
     SUBCASE("git hub example"){
         MyContainer<int> container;
         container.addElement(7);
@@ -413,7 +476,9 @@ TEST_CASE("Descending Order"){
         CHECK(i == expected.size());//make sure we iterated through all elements
         
     }
-
+    /**
+     * @brief test the Descending order iterator on container with duplicate numbers.
+     */
     SUBCASE("Descending order - with equals number"){
         MyContainer<int>  container ;
         container.addElement(17);
@@ -441,7 +506,9 @@ TEST_CASE("Descending Order"){
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
-
+    /**
+     * @brief test the Descending order iterator on container with negative numbers.
+     */
     SUBCASE("Descending order - with negative numbers"){
         MyContainer<int>  container ;
         container.addElement(-17);
@@ -469,7 +536,9 @@ TEST_CASE("Descending Order"){
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
-
+    /**
+     * @brief test the Descending order iterator on container with strings.
+     */
     SUBCASE("string"){
         MyContainer<string> container;
         container.addElement("sharon");
@@ -489,7 +558,10 @@ TEST_CASE("Descending Order"){
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
-
+    /**
+     * @brief test the Descending order iterator on container with TempClass.
+     *  a comparable class i build for the test because this should work on every comparable class.
+     */
     SUBCASE("TempClass"){
         MyContainer<TempClass> container;
         container.addElement(TempClass(28, 11.75, "sharon"));
@@ -519,6 +591,9 @@ TEST_CASE("Descending Order"){
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
 
+    /**
+     * @brief test the Descending order iterator operator[].
+     */
     SUBCASE("[]"){
         MyContainer<int> container;
         container.addElement(7);
@@ -538,9 +613,49 @@ TEST_CASE("Descending Order"){
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
+
+    /**
+     * @brief test the Descending order iterator on empty container.
+     */
+    SUBCASE("Empty container"){
+        MyContainer<double> container;
+        auto beginD = container.begin_descending_order();
+        auto endD = container.end_descending_order();
+        CHECK_THROWS_WITH(*beginD, "Iterator out of range");
+        CHECK_THROWS_WITH(*endD, "Iterator out of range");
+;
+    }
+
+    /**
+     * @brief test the Descending order iterator on container with double.
+     */
+    SUBCASE("double"){
+        MyContainer<double> container;
+        container.addElement(7.5);
+        container.addElement(15.2);
+        container.addElement(6.3);
+        container.addElement(1.1);
+        container.addElement(2.4);
+
+        auto begin = container.begin_descending_order();
+        auto end = container.end_descending_order();
+        std::vector<double> expected = {15.2, 7.5, 6.3, 2.4, 1.1};
+        size_t i=0;
+        for (i=0; begin !=end;++begin, i++)
+        {
+            CHECK(*begin == expected[i]);
+        }
+        CHECK(i == expected.size());//make sure we iterated through all elements
+    }
 }
 
+/**
+ * @brief Test cases for Side Cross Order Iterator.
+ */
 TEST_CASE("Middle Out Order"){
+    /**
+     * @brief test the Side Cross order iterator on the example from the github readMe page.
+     */
     SUBCASE("git hub example"){
         MyContainer<int> container;
         container.addElement(7);
@@ -560,7 +675,9 @@ TEST_CASE("Middle Out Order"){
         CHECK(i == expected.size());//make sure we iterated through all elements
         
     }
-
+    /**
+     * @brief test the Side Cross order iterator on container with duplicate numbers.
+     */
     SUBCASE("Middle Out Order - even number of elements"){
         MyContainer<int> container;
         container.addElement(7);
@@ -581,7 +698,9 @@ TEST_CASE("Middle Out Order"){
         CHECK(i == expected.size());//make sure we iterated through all elements
         
     }
-
+    /**
+     * @brief test the Side Cross order iterator on container with duplicate numbers.
+     */
     SUBCASE("Middle Out order - with equals number"){
         MyContainer<int>  container ;
         container.addElement(17);
@@ -613,8 +732,9 @@ TEST_CASE("Middle Out Order"){
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
-
-
+    /**
+     * @brief test the Side Cross order iterator on container with negative numbers.
+     */
     SUBCASE("Middle out order - with negative numbers"){
         MyContainer<int>  container ;
         container.addElement(-17);
@@ -633,7 +753,9 @@ TEST_CASE("Middle Out Order"){
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
-
+    /**
+     * @brief test the Side Cross order iterator on container with strings.
+     */
     SUBCASE("string"){
         MyContainer<string> container;
         container.addElement("sharon");
@@ -653,7 +775,10 @@ TEST_CASE("Middle Out Order"){
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
-
+    /**
+     * @brief test the Side Cross order iterator on container with TempClass.
+     *  a comparable class i build for the test because this should work on every comparable class.
+     */
     SUBCASE("TempClass"){
         MyContainer<TempClass> container;
         container.addElement(TempClass(28, 11.75, "sharon"));
@@ -682,7 +807,9 @@ TEST_CASE("Middle Out Order"){
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
-
+    /**
+     * @brief test the Side Cross order iterator operator[].
+     */
     SUBCASE("[]"){
         MyContainer<int> container;
         container.addElement(7);
@@ -708,9 +835,48 @@ TEST_CASE("Middle Out Order"){
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
+    /**
+     * @brief test the Side Cross order iterator on empty container.
+     */
+    SUBCASE("Empty container"){
+        MyContainer<double> container;
+        auto beginM = container.begin_middle_out_order();
+        auto endM = container.end_middle_out_order();
+        CHECK_THROWS_WITH(*beginM, "Iterator out of range");
+        CHECK_THROWS_WITH(*endM, "Iterator out of range");
+    }
+
+    /**
+     * @brief test the Side Cross order iterator on container with double.
+     */
+    SUBCASE("double"){
+        MyContainer<double> container;
+        container.addElement(7.5);
+        container.addElement(15.2);
+        container.addElement(6.3);
+        container.addElement(1.1);
+        container.addElement(2.4);
+
+        auto begin = container.begin_middle_out_order();
+        auto end = container.end_middle_out_order();
+        std::vector<double> expected = {6.3, 15.2, 1.1, 7.5, 2.4};
+        size_t i=0;
+        for (i=0; begin !=end;++begin, i++)
+        {
+            CHECK(*begin == expected[i]);
+        }
+        CHECK(i == expected.size());//make sure we iterated through all elements
+    }
 }
 
+/**
+ * @brief Test cases for Order Iterator.
+ */
 TEST_CASE("Order"){
+    /**
+     * @brief Test cases for Order Iterator.
+     * This iterator returns the elements in the order they were added to the container.
+     */
     SUBCASE("git hub example"){
         MyContainer<int> container;
         container.addElement(7);
@@ -731,6 +897,9 @@ TEST_CASE("Order"){
         
     }
 
+    /**
+     * @brief test the Order iterator on container with duplicate numbers.
+     */
     SUBCASE("in Order - with equals number"){
         MyContainer<int>  container ;
         container.addElement(17);
@@ -763,6 +932,9 @@ TEST_CASE("Order"){
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
 
+    /**
+     * @brief test the Order iterator on container with negative numbers.
+     */
     SUBCASE("in order - with negative numbers"){
         MyContainer<int>  container ;
         container.addElement(-17);
@@ -782,6 +954,9 @@ TEST_CASE("Order"){
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
 
+    /**
+     * @brief test the Order iterator on container with strings.
+     */
     SUBCASE("string"){
         MyContainer<string> container;
         container.addElement("sharon");
@@ -802,6 +977,10 @@ TEST_CASE("Order"){
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
 
+    /**
+     * @brief test the Order iterator on container with TempClass.
+     *  a comparable class i build for the test because this should work on every comparable class.
+     */
     SUBCASE("TempClass"){
         MyContainer<TempClass> container;
         container.addElement(TempClass(28, 11.75, "sharon"));
@@ -831,6 +1010,9 @@ TEST_CASE("Order"){
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
 
+    /**
+     * @brief test the Order iterator operator[].
+     */
     SUBCASE("[]"){
         MyContainer<int> container;
         container.addElement(7);
@@ -856,9 +1038,48 @@ TEST_CASE("Order"){
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
+
+    /**
+     * @brief test the Order iterator on empty container.
+     */
+    SUBCASE("Empty container"){
+        MyContainer<double> container;
+        auto beginO = container.begin_order();
+        auto endO = container.end_order();
+        CHECK_THROWS_WITH(*beginO, "Iterator out of range");
+        CHECK_THROWS_WITH(*endO, "Iterator out of range");
+    }
+
+    /**
+     * @brief test the Order iterator on container with double.
+     */
+    SUBCASE("double"){
+        MyContainer<double> container;
+        container.addElement(7.5);
+        container.addElement(15.2);
+        container.addElement(6.3);
+        container.addElement(1.1);
+        container.addElement(2.4);
+
+        auto begin = container.begin_order();
+        auto end = container.end_order();
+        std::vector<double> expected = {7.5, 15.2, 6.3, 1.1, 2.4};
+        size_t i=0;
+        for (i=0; begin !=end;++begin, i++)
+        {
+            CHECK(*begin == expected[i]);
+        }
+        CHECK(i == expected.size());//make sure we iterated through all elements
+    }
 }
 
+/**
+ * @brief Test cases for Reverse order iterator.
+ */
 TEST_CASE("Reverse Order"){
+    /**
+     * @brief test the Reverse order iterator on the example from the github readMe page.
+     */
     SUBCASE("git hub example"){
         MyContainer<int> container;
         container.addElement(7);
@@ -878,7 +1099,9 @@ TEST_CASE("Reverse Order"){
         CHECK(i == expected.size());//make sure we iterated through all elements
         
     }
-
+    /**
+     * @brief test the Reverse order iterator on container with duplicate numbers.
+     */
     SUBCASE("reverse Order - with equals number"){
         MyContainer<int>  container ;
         container.addElement(17);
@@ -911,6 +1134,9 @@ TEST_CASE("Reverse Order"){
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
 
+    /**
+     * @brief test the Reverse order iterator on container with negative numbers.
+     */
     SUBCASE("reverse order - with negative numbers"){
         MyContainer<int>  container ;
         container.addElement(-17);
@@ -930,6 +1156,9 @@ TEST_CASE("Reverse Order"){
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
 
+    /**
+     * @brief test the Reverse order iterator on container with strings.
+     */
     SUBCASE("string"){
         MyContainer<string> container;
         container.addElement("sharon");
@@ -950,6 +1179,9 @@ TEST_CASE("Reverse Order"){
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
 
+    /**
+     * @brief test the Reverse order iterator on container with TempClass.
+     */
     SUBCASE("TempClass"){
         MyContainer<TempClass> container;
         container.addElement(TempClass(28, 11.75, "sharon"));
@@ -979,6 +1211,9 @@ TEST_CASE("Reverse Order"){
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
 
+    /**
+     * @brief test the Reverse order iterator operator[].
+     */
     SUBCASE("[]"){
         MyContainer<int> container;
         container.addElement(7);
@@ -1002,9 +1237,46 @@ TEST_CASE("Reverse Order"){
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
-}
 
+    /**
+     * @brief test the Reverse order iterator on empty container.
+     */
+    SUBCASE("Empty container"){
+        MyContainer<double> container;
+        auto beginR = container.begin_reverse_order();
+        auto endR = container.end_reverse_order();
+        CHECK_THROWS_WITH(*beginR, "Iterator out of range");
+        CHECK_THROWS_WITH(*endR, "Iterator out of range");
+    }
+    /**
+     * @brief test the Reverse order iterator on container with double.
+     */
+    SUBCASE("double"){
+        MyContainer<double> container;
+        container.addElement(7.5);
+        container.addElement(15.2);
+        container.addElement(6.3);
+        container.addElement(1.1);
+        container.addElement(2.4);
+
+        auto begin = container.begin_reverse_order();
+        auto end = container.end_reverse_order();
+        std::vector<double> expected = {2.4, 1.1, 6.3, 15.2, 7.5};
+        size_t i=0;
+        for (i=0; begin !=end;++begin, i++)
+        {
+            CHECK(*begin == expected[i]);
+        }
+        CHECK(i == expected.size());//make sure we iterated through all elements
+    }
+}
+/**
+ * @brief Test cases for Side Cross Order Iterator.
+ */
 TEST_CASE("Side Cross Order"){
+    /**
+     * @brief test the Side Cross order iterator on the example from the github readMe page.
+     */
     SUBCASE("git hub example"){
         MyContainer<int> container;
         container.addElement(7);
@@ -1024,7 +1296,9 @@ TEST_CASE("Side Cross Order"){
         CHECK(i == expected.size());//make sure we iterated through all elements
         
     }
-
+    /**
+     * @brief test the Side Cross order iterator on container with duplicate numbers.
+     */
     SUBCASE("side cross Order - with equals number"){
         MyContainer<int>  container ;
         container.addElement(17);
@@ -1056,7 +1330,9 @@ TEST_CASE("Side Cross Order"){
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
-
+    /**
+     * @brief test the Side Cross order iterator on container with negative numbers.
+     */
     SUBCASE("side cross order - with negative numbers"){
         MyContainer<int>  container ;
         container.addElement(-17);
@@ -1075,7 +1351,9 @@ TEST_CASE("Side Cross Order"){
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
-
+    /**
+     * @brief test the Side Cross order iterator on container with strings.
+     */
     SUBCASE("string"){
         MyContainer<string> container;
         container.addElement("sharon");
@@ -1095,7 +1373,9 @@ TEST_CASE("Side Cross Order"){
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
-
+    /**
+     * @brief test the Side Cross order iterator on container with TempClass.
+     */
     SUBCASE("TempClass"){
         MyContainer<TempClass> container;
         container.addElement(TempClass(28, 11.75, "sharon"));
@@ -1124,7 +1404,9 @@ TEST_CASE("Side Cross Order"){
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
- 
+    /**
+     * @brief test the Side Cross order iterator operator[].
+     */
     SUBCASE("[]"){
         MyContainer<int> container;
         container.addElement(7);
@@ -1147,6 +1429,38 @@ TEST_CASE("Side Cross Order"){
         {
             CHECK(begin[i] == expected[i]);
             CHECK(begin[i] == *begin);//make sure operator* and operator[i] are the same
+        }
+        CHECK(i == expected.size());//make sure we iterated through all elements
+    }
+    /**
+     * @brief test the Side Cross order iterator on empty container.
+     */
+    SUBCASE("Empty container"){
+        MyContainer<double> container;
+        auto beginS = container.begin_side_cross_order(); 
+        auto endS = container.end_side_cross_order();
+        CHECK_THROWS_WITH(*beginS, "Iterator out of range");
+        CHECK_THROWS_WITH(*endS, "Iterator out of range");
+    }
+
+    /**
+     * @brief test the Side Cross order iterator on container with double.
+     */
+    SUBCASE("double"){
+        MyContainer<double> container;
+        container.addElement(7.5);
+        container.addElement(15.2);
+        container.addElement(6.3);
+        container.addElement(1.1);
+        container.addElement(2.4);
+
+        auto begin = container.begin_side_cross_order();
+        auto end = container.end_side_cross_order();
+        std::vector<double> expected = {1.1, 15.2, 2.4, 7.5, 6.3};
+        size_t i=0;
+        for (i=0; begin !=end;++begin, i++)
+        {
+            CHECK(*begin == expected[i]);
         }
         CHECK(i == expected.size());//make sure we iterated through all elements
     }
